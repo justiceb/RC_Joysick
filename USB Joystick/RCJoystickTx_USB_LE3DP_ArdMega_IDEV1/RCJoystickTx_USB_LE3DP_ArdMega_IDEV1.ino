@@ -67,6 +67,8 @@ int AUX2_Min = 0, AUX2_Max = 1023;                              // Aux2 pot (ANA
 #define D5_pin  5
 #define D6_pin  6
 #define D7_pin  7
+#define BUTTON_PIN_1 46
+#define BUTTON_PIN_2 44
 LiquidCrystal_I2C	lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin);
 
 // Assign physical analogue & digital I/O pins
@@ -136,6 +138,8 @@ void setup() {
   // Setup Digital I/O
   pinMode(outPinPPM, OUTPUT);      // set as output
   pinMode(outPinBuzz, OUTPUT);     // set as output
+  pinMode(BUTTON_PIN_1, INPUT);  
+  pinMode(BUTTON_PIN_2, INPUT); 
   
   // Beep-Beep
   digitalWrite(outPinBuzz, HIGH);
@@ -199,14 +203,14 @@ void RunSubs() {  // Run Various Setup subs
 // *********************** Main Loop **************************
 void loop() {  // Main loop
 
-  Usb.Task();  // Joystick
-
+  Usb.Task();                    // Joystick
   buzzer();                      // Refresh buzzer
   readanalogue();                // Read analogue I/O
   
   if (tick3 >= 20) {             // Run these subs at fixed rate
 	  tick3 = 0;
 	  readanalogueslow();        // Read analogue I/O
+          readbutton();
   }
   
   checklimitsmodessetouputs();
@@ -216,7 +220,7 @@ void loop() {  // Main loop
 	  ModelSelection();          // Model Selection
 	  batterymonitor_auxpot();   // Battery check
 	  readdigital();             // Read digital I/O
-      HiMiLoRates();             // Rates
+          HiMiLoRates();             // Rates
 	  TrimSettings();            // Trims
 	  ElevonModeSet();           // Elevon Mode
 	  ExpoMode();                // Exponential Modes

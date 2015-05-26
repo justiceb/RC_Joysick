@@ -32,8 +32,19 @@ int PPMchannelpointer = 1;
 int PPMvaluepointer = 1;
 int lowtemp1 = 0;
 int hightemp1 = 0;
+int flight_mode = 0;
+int flight_mode_ppm[7] = {1166, 1296, 1426, 1556, 1686, 1816};
 
 
+// Read external switches and buttons
+void readbutton() {
+  
+  // If a button is detected as HIGH, change flight mode
+  if(digitalRead(BUTTON_PIN_2) == HIGH) { flight_mode = 1; }
+  if(digitalRead(BUTTON_PIN_1) == HIGH) { flight_mode = 0; }
+  
+}
+    
 // Read Digital Inputs
 void readdigital() {
 
@@ -531,7 +542,8 @@ void checklimitsmodessetouputs() {
    PPM_arrayT[1] = AI_Eleva + Fixed_uS;
    PPM_arrayT[2] = AI_Throt + Fixed_uS;
    PPM_arrayT[3] = AI_Rudde + Fixed_uS;
-   PPM_arrayT[4] = Auxsw_uS + Fixed_uS;
+   //PPM_arrayT[4] = Auxsw_uS + Fixed_uS;
+   PPM_arrayT[4] = flight_mode_ppm[flight_mode];
    PPM_arrayT[5] = AI_Auxpot + Fixed_uS;
    PPM_arrayT[6] = AI_Auxpot2 + Fixed_uS;
    PPM_arrayT[7] = Auxsw2_uS + Fixed_uS;
