@@ -34,14 +34,36 @@ int lowtemp1 = 0;
 int hightemp1 = 0;
 int flight_mode = 0;
 int flight_mode_ppm[7] = {1166, 1296, 1426, 1556, 1686, 1816};
+int opt7 = 0;
+int opt8 = 0;
+int opt_switch_ppm[3] = {1100, 1900};
 
+void button_led(int led_pin) {
+  digitalWrite(LED_PIN_1, LOW);
+  digitalWrite(LED_PIN_2, LOW);
+  digitalWrite(LED_PIN_3, LOW);
+  digitalWrite(LED_PIN_4, LOW);
+  digitalWrite(LED_PIN_5, LOW);
+  digitalWrite(LED_PIN_6, LOW);
+  digitalWrite(led_pin, HIGH);
+}
 
 // Read external switches and buttons
 void readbutton() {
   
   // If a button is detected as HIGH, change flight mode
-  if(digitalRead(BUTTON_PIN_2) == HIGH) { flight_mode = 1; }
-  if(digitalRead(BUTTON_PIN_1) == HIGH) { flight_mode = 0; }
+  if(digitalRead(BUTTON_PIN_6) == HIGH) { flight_mode = 5; button_led(LED_PIN_6); }
+  if(digitalRead(BUTTON_PIN_5) == HIGH) { flight_mode = 4; button_led(LED_PIN_5); }
+  if(digitalRead(BUTTON_PIN_4) == HIGH) { flight_mode = 3; button_led(LED_PIN_4); }
+  if(digitalRead(BUTTON_PIN_3) == HIGH) { flight_mode = 2; button_led(LED_PIN_3); }
+  if(digitalRead(BUTTON_PIN_2) == HIGH) { flight_mode = 1; button_led(LED_PIN_2); }
+  if(digitalRead(BUTTON_PIN_1) == HIGH) { flight_mode = 0; button_led(LED_PIN_1); }
+  
+  //If switch is high, set PPM channel to HIGH
+  if(digitalRead(SWITCH_PIN_1) == HIGH) { opt7 = 1; }
+  else { opt7 = 0; }
+  if(digitalRead(SWITCH_PIN_2) == HIGH) { opt8 = 1; }
+  else { opt8 = 0; }
   
 }
     
@@ -545,8 +567,10 @@ void checklimitsmodessetouputs() {
    //PPM_arrayT[4] = Auxsw_uS + Fixed_uS;
    PPM_arrayT[4] = flight_mode_ppm[flight_mode];
    PPM_arrayT[5] = AI_Auxpot + Fixed_uS;
-   PPM_arrayT[6] = AI_Auxpot2 + Fixed_uS;
-   PPM_arrayT[7] = Auxsw2_uS + Fixed_uS;
+   //PPM_arrayT[6] = AI_Auxpot2 + Fixed_uS;
+   PPM_arrayT[6] = opt_switch_ppm[opt7];
+   //PPM_arrayT[7] = Auxsw2_uS + Fixed_uS;
+   PPM_arrayT[7] = opt_switch_ppm[opt8];
    
    // Load PPM channel array with final channel values
    PPM_array[0] = PPM_arrayT[PPM_arrayTemp[1]-1];

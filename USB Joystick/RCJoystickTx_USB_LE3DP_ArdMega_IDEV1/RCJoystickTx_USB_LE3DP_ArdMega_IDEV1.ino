@@ -67,8 +67,20 @@ int AUX2_Min = 0, AUX2_Max = 1023;                              // Aux2 pot (ANA
 #define D5_pin  5
 #define D6_pin  6
 #define D7_pin  7
-#define BUTTON_PIN_1 46
-#define BUTTON_PIN_2 44
+#define BUTTON_PIN_1 48
+#define BUTTON_PIN_2 46
+#define BUTTON_PIN_3 44
+#define BUTTON_PIN_4 42
+#define BUTTON_PIN_5 40
+#define BUTTON_PIN_6 38
+#define SWITCH_PIN_1 36
+#define SWITCH_PIN_2 34
+#define LED_PIN_1 37
+#define LED_PIN_2 41
+#define LED_PIN_3 35
+#define LED_PIN_4 39
+#define LED_PIN_5 43
+#define LED_PIN_6 45
 LiquidCrystal_I2C	lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin);
 
 // Assign physical analogue & digital I/O pins
@@ -140,6 +152,22 @@ void setup() {
   pinMode(outPinBuzz, OUTPUT);     // set as output
   pinMode(BUTTON_PIN_1, INPUT);  
   pinMode(BUTTON_PIN_2, INPUT); 
+  pinMode(BUTTON_PIN_3, INPUT); 
+  pinMode(BUTTON_PIN_4, INPUT); 
+  pinMode(BUTTON_PIN_5, INPUT); 
+  pinMode(BUTTON_PIN_6, INPUT); 
+  pinMode(SWITCH_PIN_1, INPUT); 
+  pinMode(SWITCH_PIN_2, INPUT); 
+  pinMode(LED_PIN_1, OUTPUT);  
+  pinMode(LED_PIN_2, OUTPUT); 
+  pinMode(LED_PIN_3, OUTPUT); 
+  pinMode(LED_PIN_4, OUTPUT); 
+  pinMode(LED_PIN_5, OUTPUT); 
+  pinMode(LED_PIN_6, OUTPUT); 
+  
+  // Init LED pins
+  button_led(LED_PIN_1);
+  
   
   // Beep-Beep
   digitalWrite(outPinBuzz, HIGH);
